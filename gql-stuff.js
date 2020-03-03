@@ -2,6 +2,20 @@
 const R = require('ramda')
 const { books, byAuthor, byTitle } = require('./bookData')
 
+// Helper function to send resolve message based on the type to
+// resolve
+const typeResolver = fieldToResolve => (parent, args, context, info) => new Promise((resolve, reject) => {
+  context.mesh.act({
+    cmd: 'resolve',
+    type: fieldToResolve,
+    args
+  },
+  (err, result) => {
+    if (err) { return reject(err) }
+    resolve(result)
+  })
+})
+
 const gqlStuff = gql => {
   const typeDefs = gql`
     type Book {
@@ -19,18 +33,10 @@ const gqlStuff = gql => {
 
   const resolvers = {
     Query: {
-      books: () => books,
-      booksByAuthor: (parent, args, context, info) => {
-        return byAuthor(args.author)
-      },
-      bookByTitle: (parent, args, context, info) => {
-        const matchingTitles = byTitle(args.title)
-        if (matchingTitles.length === 0) {
-          return null
-        }
-        return matchingTitles[0]
-      },
-      authors: () => R.uniq(R.map(R.path(['author']), books))
+      books: typeResolver('Query.books'),
+      booksByAuthor: typeResolver('Query.booksByAuthor'),
+      bookByTitle: typeResolver('Query.bookByTitle'),
+      authors: typeResolver('Query.authors')
     }
   }
 

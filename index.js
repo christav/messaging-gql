@@ -1,6 +1,7 @@
 // use strict
 
 const { ApolloServer, gql } = require('apollo-server-fastify')
+const mesh = require('./mesh')()
 const { typeDefs, resolvers } = require('./gql-stuff')(gql)
 const fastify = require('fastify')({ logger: true })
 
@@ -11,9 +12,11 @@ fastify.get('/', async (req, res) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  playground: true
+  playground: true,
+  context: () => ({
+    mesh
+  })
 })
-
 
 const start = async () => {
   try {
