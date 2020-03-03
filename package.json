@@ -1,0 +1,17 @@
+{
+  "name": "messaged-gql",
+  "version": "1.0.0",
+  "description": "Experimenting with graphql resolvers and messaging",
+  "main": "index.js",
+  "author": "Chris Tavares <cct@tavaresstudios.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "apollo-server-fastify": "^2.10.1",
+    "fastify": "^2.12.1",
+    "ramda": "^0.27.0"
+  },
+  "scripts": {
+    "start": "node ./index.js"
+  }
+}
