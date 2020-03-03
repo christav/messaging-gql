@@ -17,7 +17,7 @@ const init = () => {
 
   mesh.add('cmd:resolve,type:Query.bookByTitle', (msg, reply) => {
     const titles = bookData.byTitle(msg.args.title)
-    if (title.length === 0) {
+    if (titles.length === 0) {
       reply(null, null)
     } else {
       reply(null, titles[0])
